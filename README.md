@@ -48,7 +48,7 @@ Result will be the result of the HTTP.call, with the data
 property containing the response from ClickSend as per
 [ClickSend's REST Documentation](http://developers.clicksend.com/api/rest/):
 
-```json
+```js
 {
   statusCode: 200,
   content: '{"recipientcount":1,"messages":[{"to":"+61 (0)431-939-709","messageid":"8E76C2C1-BF0B-EAD1-E093-FDC02574B5AC","result":"0000","errortext":"Success","price":"0.0770","currency_symbol":"$","currency_type":"AUD"}]}',
