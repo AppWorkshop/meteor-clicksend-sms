@@ -13,7 +13,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use('ecmascript');
-  api.use('appworkshop:rest-api-wrapper',['server']);
+  api.use('appworkshop:rest-api-wrapper@1.0.1',['server']);
   api.addFiles('clicksend.js', ['server']);
 });
 
@@ -21,7 +21,7 @@ Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
   api.addFiles('clicksend-tests-settings.js');
-  api.use('appworkshop:rest-api-wrapper',['server']);
+  api.use('appworkshop:rest-api-wrapper@1.0.1',['server']);
   api.addFiles('clicksend.js', ['server']);
   api.addFiles('clicksend-tests.js');
 });
