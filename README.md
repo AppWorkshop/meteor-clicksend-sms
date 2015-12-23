@@ -1,16 +1,32 @@
 # ClickSend SMS
 
-Send SMS easily via ClickSend's REST API. See the [ClickSend docs](http://developers.clicksend.com/api/rest/).
+Send SMS easily from your meteor server via ClickSend's REST API. See the [ClickSend docs](http://developers.clicksend.com/api/rest/).
 
 ## Usage
 
+***NOTE*** : For security reasons, you can only send SMS directly from the server. To send from the client, wrap the call in your own method.
+
 ```
-Meteor.call('sendSMS', '+61411111111', "G'day Rohan!", function (error, result) {
-  console.log("error:");
-  console.log(error);
+try {
+  var result = AppWorkshop.sendSMS('+61411111111', "G'day Homer!");
   console.log("result:");
   console.log(result);
+} catch (error) {
+  console.log("error:");
+  console.log(error);
+}
+```
+
+If you want to send SMS from the client, create a method:
+
+```
+Meteor.methods({
+  sendSMSFromServer: function (recipient) {
+    var result = AppWorkshop.sendSMS(recipient, "Test SMS!");
+    return result;
+  }
 });
+
 ```
 
 ## Configuration

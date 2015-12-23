@@ -1,13 +1,13 @@
 var smsFunctionLibrary;
+AppWorkshop = AppWorkshop || {};
 
 Meteor.startup(function () {
   // initialise our endpoints
   smsFunctionLibrary = new RestEndpoints();
-});
 
-Meteor.methods({
+
   /**
-   * Sends an SMS from the server using ClickSend. Couldn't get much simpler.
+   * Sends an SMS from the server using ClickSend. Couldn't get much simpler. NOTE: Won't allow sending from the client.
    * The return object is the result of the HTTP.call. The data property is probably what you're interested in. It looks like:
    * <pre>
    {
@@ -42,35 +42,42 @@ Meteor.methods({
    * @param {string} message - the message to send.
    * @returns {object} the object returned by ClickSend.
    */
-  'sendSMS': function (recipient, message) {
+  AppWorkshop.sendSMS = function (recipient, message) {
     var user = Meteor.user();
 
 
     //ensure the user is logged in
-    if (!user)
+    if (!user) {
       throw new Meteor.Error(401, "You need to login to send SMS");
-    this.unblock();
+    }
 
     var senderID = "";
     if (Meteor.settings.appworkshop && Meteor.settings.appworkshop.SMSSenderID) {
       senderID = Meteor.settings.appworkshop.SMSSenderID;
     }
 
+    if (!smsFunctionLibrary.sendSMS) {
+      // refresh our rest endpoints.
+      smsFunctionLibrary = new RestEndpoints();
+    }
     var smsResult;
-    var sendSMSSync = Meteor.wrapAsync(smsFunctionLibrary.sendSMS);
     try {
-      smsResult = sendSMSSync(
+      smsResult = smsFunctionLibrary.sendSMS(
         {
           to: recipient,
           message: message,
           senderid: senderID
         }
       )
-    } catch(e) {
+    } catch (e) {
       // rethrow
-      console.log("clicksend error: " + e);
+      console.error(e);
+      console.trace("clicksend error: " + e);
+
       throw new Meteor.Error(e);
     }
     return smsResult;
-  }
-}); // add our method mapping to methods.
+  };
+});
+
+

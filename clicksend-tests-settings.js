@@ -17,5 +17,6 @@ Meteor.startup(function () {
       ],
       "SMSSenderID": "MyApp"
     }
-  }
+  };
+
 });
